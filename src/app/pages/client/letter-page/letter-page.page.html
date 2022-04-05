@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-chip (click)="btnBackPage()" color="light">Voltar</ion-chip>
+      <ion-title>Letra</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ track?.title }}</ion-card-title>
+      <ion-card-subtitle>{{ track?.titleArtist }} - {{ track?.titleAlbum }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text color="primary">
+        <h1>{{ track?.letter }}</h1>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,231 @@
+<ion-toolbar *ngIf="activeTrack">
+  <section class="container-player">
+    <section *ngIf="toggleView">
+      <ion-card [style.--custombg]="backgroundColor" class="card">
+        <ion-card-header>
+          <img
+            [defaultImage]="'assets/images/album.jpg'"
+            [lazyLoad]="activeTrack?.photo"
+          />
+          <ion-card-title color="light">{{
+            activeTrack?.title
+          }}</ion-card-title>
+          <ion-label (click)="onViewArtist()" class="label-title"
+            >{{ activeTrack?.titleArtist }} -
+            {{ activeTrack?.titleAlbum }}</ion-label
+          >
+        </ion-card-header>
+        <ion-card-content>
+          <ion-row>
+            <ion-col size="4">
+              <ion-button
+                (click)="prev()"
+                fill="clear"
+                size="full"
+                shape="round"
+              >
+                <ion-icon
+                  class="icon-player"
+                  name="play-skip-back"
+                  color="light"
+                ></ion-icon>
+              </ion-button>
+            </ion-col>
+
+            <ion-col size="4">
+              <ion-button
+                (click)="togglePlayer(false)"
+                *ngIf="!isPlaying"
+                fill="clear"
+                size="full"
+                shape="round"
+              >
+                <ion-icon
+                  class="icon-player"
+                  name="play-circle"
+                  color="light"
+                ></ion-icon>
+              </ion-button>
+              <ion-button
+                (click)="togglePlayer(true)"
+                *ngIf="isPlaying"
+                fill="clear"
+                size="full"
+                shape="round"
+              >
+                <ion-icon
+                  class="icon-player"
+                  name="pause-circle"
+                  color="light"
+                ></ion-icon>
+              </ion-button>
+            </ion-col>
+
+            <ion-col size="4">
+              <ion-button
+                (click)="next()"
+                fill="clear"
+                size="full"
+                shape="round"
+              >
+                <ion-icon
+                  class="icon-player"
+                  name="play-skip-forward"
+                  color="light"
+                ></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+
+          <ion-item lines="none" color="transparent">
+            <ion-button
+              (click)="toggleRepeatMusic()"
+              expand="full"
+              fill="clear"
+              shape="round"
+              slot="start"
+            >
+              <ion-icon name="repeat" color="light"></ion-icon>
+              <ion-badge *ngIf="toggleRepeat">1</ion-badge>
+            </ion-button>
+            <ion-button
+              *ngIf="!library"
+              (click)="showModalAddMusic($event)"
+              expand="full"
+              fill="clear"
+              shape="round"
+              slot="end"
+            >
+              <ion-icon name="heart" color="light"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item lines="none" color="transparent">
+            <ion-spinner
+              name="dots"
+              [hidden]="onLoadTrack == false"
+            ></ion-spinner>
+            <ion-range
+              [hidden]="onLoadTrack == true"
+              class="range-player"
+              #range
+              slot="start"
+              [value]="progress"
+              max="100"
+              color="light"
+              mode="md"
+              (touched)="updateSeek()"
+              (mouseup)="updateSeek()"
+            ></ion-range>
+            <p slot="end">{{ timeTrack }}</p>
+          </ion-item>
+
+          <ion-button
+            *ngIf="activeTrack?.letter"
+            (click)="showModalLetter()"
+            expand="full"
+            size="small"
+            color="light"
+            shape="round"
+          >
+            Letra da música
+          </ion-button>
+          <br />
+          <ion-button
+            (click)="toggleViewCtrl()"
+            expand="full"
+            size="small"
+            color="light"
+            shape="round"
+          >
+            Voltar
+            <ion-icon name="chevron-down-outline"></ion-icon>
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </section>
+
+    <section *ngIf="!toggleView">
+      <ion-spinner [hidden]="onLoadTrack == false"></ion-spinner>
+      <ion-range
+        [hidden]="onLoadTrack == true"
+        class="range-min-player ion-no-padding ion-no-margin"
+        #range
+        [value]="progress"
+        max="100"
+        mode="md"
+        color="light"
+      ></ion-range>
+      <ion-item lines="none">
+        <ion-row class="ion-no-padding">
+          <ion-col size="2" class="ion-no-padding">
+            <img
+              class="img-album-mini-player"
+              [defaultImage]="'assets/images/album.jpg'"
+              [lazyLoad]="activeTrack?.photo"
+            />
+          </ion-col>
+          <ion-col size="5" (click)="toggleViewCtrl()">
+            <ion-label class="label-title">
+              {{ activeTrack?.title }}
+            </ion-label>
+            <ion-label class="label"
+              >{{ activeTrack?.titleArtist }} -
+              {{ activeTrack?.titleAlbum }}</ion-label
+            >
+            <ion-spiner name="dots" *ngIf="isPlaying == false"></ion-spiner>
+          </ion-col>
+          <ion-col
+            size="5"
+            class="ion-text-center ion-no-padding ion-align-self-center"
+          >
+            <ion-row>
+              <ion-col size="4">
+                <ion-button
+                  (click)="prev()"
+                  fill="clear"
+                  size="small"
+                  shape="round"
+                >
+                  <ion-icon name="play-skip-back" color="light"></ion-icon>
+                </ion-button>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-button
+                  (click)="togglePlayer(false)"
+                  *ngIf="!isPlaying"
+                  fill="clear"
+                  size="small"
+                  shape="round"
+                >
+                  <ion-icon name="play-circle" color="light"></ion-icon>
+                </ion-button>
+                <ion-button
+                  (click)="togglePlayer(true)"
+                  *ngIf="isPlaying"
+                  fill="clear"
+                  size="small"
+                  shape="round"
+                >
+                  <ion-icon name="pause-circle" color="light"></ion-icon>
+                </ion-button>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-button
+                  (click)="next()"
+                  fill="clear"
+                  size="small"
+                  shape="round"
+                >
+                  <ion-icon name="play-skip-forward" color="light"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </section>
+  </section>
+</ion-toolbar>

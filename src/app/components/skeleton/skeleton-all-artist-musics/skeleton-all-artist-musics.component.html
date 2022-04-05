@@ -1,0 +1,15 @@
+<ion-item>
+  <ion-label>Por enquanto nada por aqui...</ion-label>
+</ion-item>
+<ion-grid>
+  <ion-row>
+    <ion-col *ngFor="let ITEM of listSkeleton" size="4">
+      <ion-label>
+        <ion-img src="assets/images/skeleton.jpg"></ion-img>
+        <p>
+          <ion-skeleton-text animated style="width: 30%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-col>
+  </ion-row>
+</ion-grid>

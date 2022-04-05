@@ -1,0 +1,71 @@
+ion-content {
+  --background: linear-gradient(var(--custombg), var(--ion-color-primary));
+  //--background: linear-gradient(blue 20%, red 80%);
+  ion-row {
+    padding-top: 10px;
+  }
+
+  ion-card {
+    border-radius: 20px;
+  }
+
+  .album-info {
+    color: white;
+    margin-left: 11px;
+    margin-right: 11px;
+    p {
+      font-weight: bold;
+    }
+  }
+
+  .image-box {
+    border-radius: 10px;
+    margin-right: 15%;
+    margin-left: 15%;
+    padding-top: 5%;
+    img {
+      border-radius: 10px;
+    }
+    img.ng-lazyloaded {
+      animation: fadein 2.8s;
+    }
+    @keyframes fadein {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  }
+
+  ion-list {
+    overflow-y: scroll;
+    height: 100%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    margin-bottom: auto;
+  }
+
+  .icon-player {
+    width: 200px;
+    height: 200px;
+  }
+
+  .label-title {
+    padding: 0px 2px;
+    font-size: 17px;
+    left: 0;
+    font-weight: 500;
+    letter-spacing: 0.0125em;
+  }
+
+  .label {
+    padding: 0px 2px;
+    font-size: 12px;
+    right: 0;
+    font-weight: 500;
+    letter-spacing: 0.0125em;
+  }
+}

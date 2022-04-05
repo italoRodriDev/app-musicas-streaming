@@ -1,0 +1,12 @@
+<ion-slides class="movies" [options]="slidesOpts">
+  <ion-slide *ngFor="let ITEM of listSkeleton">
+    <ion-label>
+      <ion-img
+        src="assets/images/skeleton.jpg"
+      ></ion-img>
+      <p class="label-card">
+        <ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+      </p>
+    </ion-label>
+  </ion-slide>
+</ion-slides>

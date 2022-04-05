@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button text="" color="light"></ion-back-button>
+      <ion-title>Músicas Curtidas</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section class="background">
+    <br/>
+    <ion-card color="transparent">
+      <ion-card-header>
+        <ion-card-title>Músicas Curtidas</ion-card-title>
+        <ion-card-subtitle>Escute suas músicas preferidas.</ion-card-subtitle>
+        <div [ngSwitch]="listMusics.length">
+          <ion-card-subtitle *ngSwitchCase="1"
+            >Você curtiu {{ listMusics.length }} Música</ion-card-subtitle
+          >
+          <ion-card-subtitle *ngSwitchDefault
+            >Você curtiu {{ listMusics.length }} Músicas</ion-card-subtitle
+          >
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        
+      </ion-card-content>
+    </ion-card>
+    
+    <ion-list>
+      <ion-searchbar
+          (ionChange)="filterSearchbar($event)"
+          color="transparent"
+          placeholder="Buscar músicas"
+        ></ion-searchbar>
+      <ion-list-header>
+        <ion-title>Músicas</ion-title>
+      </ion-list-header>
+      <app-skeleton-playlist
+        *ngIf="listMusicsFilter.length < 1"
+      ></app-skeleton-playlist>
+      <ion-item
+        *ngFor="let ITEM of listMusicsFilter; let INDEX = index"
+        color="transparent"
+        button
+      >
+        <ion-thumbnail>
+          <img
+            [defaultImage]=" 'assets/images/album.jpg' "
+            [lazyLoad]="ITEM?.photo"
+          />
+        </ion-thumbnail>
+        <ion-label (click)="onClickplay(ITEM)" class="label-title"
+          >{{ ITEM?.title }}</ion-label
+        >
+        <ion-icon name="radio-outline" color="light"></ion-icon>
+        <ion-chip (click)="removeMusic(ITEM)">
+          <ion-icon name="remove-circle-outline" color="light"></ion-icon>
+        </ion-chip>
+      </ion-item>
+    </ion-list>
+  </section>
+</ion-content>
+
+<ion-footer>
+  <app-player-preview></app-player-preview>
+</ion-footer>

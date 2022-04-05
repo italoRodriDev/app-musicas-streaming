@@ -1,0 +1,12 @@
+<ion-item
+color="transparent"
+button
+>
+<ion-thumbnail>
+  <img [defaultImage]="'assets/images/album.jpg'" [lazyLoad]="dataMusic?.photo">
+</ion-thumbnail>
+<ion-label class="label-title">{{ dataMusic?.title }}</ion-label>
+<ion-button fill="clear" size="small" shape="round">
+  <ion-icon name="radio-outline" color="light"></ion-icon>
+</ion-button>
+</ion-item>

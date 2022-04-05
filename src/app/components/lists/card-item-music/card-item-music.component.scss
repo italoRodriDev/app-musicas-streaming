@@ -1,0 +1,33 @@
+img {
+  border-radius: 10px;
+}
+
+img.ng-lazyloaded {
+  animation: fadein 2.8s;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.label-title {
+  padding: 0px 2px;
+  font-size: 17px;
+  left: 0;
+  font-weight: 500;
+  letter-spacing: 0.0125em;
+}
+
+.label {
+  padding: 0px 2px;
+  font-size: 12px;
+  right: 0;
+  font-weight: 500;
+  letter-spacing: 0.0125em;
+}

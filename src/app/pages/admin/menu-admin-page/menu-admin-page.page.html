@@ -1,0 +1,44 @@
+<ion-content>
+  <ion-item color="transparent">
+    <ion-avatar>
+      <ion-img
+        [src]="dataUser?.photo ? dataUser?.photo : 'assets/images/avatar.jpg' "
+      ></ion-img>
+    </ion-avatar>
+    <ion-label class="label"
+      >{{ messageTimeDay }} {{ dataUser?.name }}</ion-label
+    >
+  </ion-item>
+
+  <section class="background">
+    <br />
+    <ion-list lines="full">
+      <ion-list-header>
+        <ion-title>Distribuidoras</ion-title>
+      </ion-list-header>
+      <ion-item
+        color="light"
+        (click)="onClickList( ITEM?.path )"
+        *ngFor="let ITEM of listMenuLinks"
+      >
+        <ion-title>{{ ITEM.title }}</ion-title>
+      </ion-item>
+    </ion-list>
+  </section>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-slides [options]="slideOptions">
+      <ion-slide
+        (click)="onClickBottomMenu( ITEM?.path )"
+        *ngFor="let ITEM of listBottomMenu"
+      >
+        <div class="container ion-text-left">
+          <ion-icon [name]="ITEM?.icon"></ion-icon>
+          <span> {{ ITEM?.title }} </span>
+        </div>
+      </ion-slide>
+    </ion-slides>
+  </ion-toolbar>
+</ion-footer>

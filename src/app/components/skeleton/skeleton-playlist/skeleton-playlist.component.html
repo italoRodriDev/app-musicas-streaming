@@ -1,0 +1,12 @@
+<ion-item color="transparent">
+  <ion-label>Por enquando nada por aqui...</ion-label>
+</ion-item>
+<ion-item *ngFor="let ITEM of listSkeleton" color="transparent" button>
+  <ion-thumbnail>
+    <ion-img src="assets/images/skeleton.jpg"></ion-img>
+  </ion-thumbnail>
+  <ion-label>
+    <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+  </ion-label>
+  <ion-chip style="width: 30px"></ion-chip>
+</ion-item>

@@ -1,0 +1,41 @@
+ion-content {
+  ion-card {
+    border-radius: 20px;
+  }
+
+  .label-progress-upload {
+    margin-left: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: var(--ion-color-primary);
+    border: 1px solid white;
+  }
+
+  .label {
+    padding: 0px 20px;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.0125em;
+  }
+
+  ion-list {
+    height: 300px;
+    overflow-y: scroll;
+  }
+
+  .background {
+    margin-top: 20px;
+    min-height: 100%;
+    height: auto;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: white;
+  }
+
+  .anim-card:hover {
+    height: 145px;
+    transition-property: height;
+    transition-duration: 0.5s;
+    transition-timing-function: linear;
+  }
+}

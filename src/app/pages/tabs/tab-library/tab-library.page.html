@@ -1,0 +1,39 @@
+<ion-content>
+  <section class="background">
+    <ion-item color="transparent" lines="none">
+      <ion-title>Biblioteca</ion-title>
+    </ion-item>
+    <br />
+    <ion-card color="transparent" *ngIf="listPlaylist.length > 0">
+      <ion-card-header>
+        <ion-card-title>Sua Biblioteca</ion-card-title>
+        <ion-card-subtitle
+          >Um total de {{ listPlaylistFilter.length }}
+          playlists</ion-card-subtitle
+        >
+      </ion-card-header>
+    </ion-card>
+
+    <ion-list>
+      <ion-list-header>
+        <ion-title>Suas Playlists</ion-title>
+      </ion-list-header>
+      <app-skeleton-playlist
+        *ngIf="listPlaylist.length < 1"
+      ></app-skeleton-playlist>
+      <ion-item
+        *ngFor="let ITEM of listPlaylistFilter; let INDEX = index"
+        color="transparent"
+        button
+      >
+        <ion-thumbnail>
+          <img [defaultImage]="'assets/images/album.jpg'" [lazyLoad]="ITEM?.photo">
+        </ion-thumbnail>
+        <ion-label (click)="onClickView(ITEM)" class="label-title">{{ ITEM?.title }}</ion-label>
+        <ion-chip (click)="removePlatlist(ITEM)">
+          <ion-icon name="remove-circle-outline" color="light"></ion-icon>
+        </ion-chip>
+      </ion-item>
+    </ion-list>
+  </section>
+</ion-content>

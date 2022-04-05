@@ -1,0 +1,96 @@
+<ion-content [scrollEvents]="true" (ionScroll)="onScrollEvent($event)">
+  <!--Toolbar-->
+  <section #header class="header">
+    <ion-grid>
+      <ion-row class="ion-text-left ion-align-items-center">
+        <ion-col size="3">
+          <img src="assets/images/logo.png" />
+        </ion-col>
+        <ion-col size="9">
+          <ion-row>
+            <ion-col size="4">
+              <ion-button
+                (click)="onClickToolbar('MUSICAS')"
+                size="small"
+                expand="full"
+                color="light"
+                shape="round"
+                fill="clear"
+                >Músicas</ion-button
+              >
+            </ion-col>
+            <ion-col size="4">
+              <ion-button
+                (click)="onClickToolbar('ARTISTAS')"
+                size="small"
+                expand="full"
+                color="light"
+                shape="round"
+                fill="clear"
+                >Artistas</ion-button
+              >
+            </ion-col>
+            <ion-col size="4">
+              <ion-button
+                (click)="signOutAccount()"
+                size="small"
+                expand="full"
+                color="light"
+                shape="round"
+                fill="clear"
+                >Sair</ion-button
+              >
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <section class="background">
+    <ion-item color="transparent" lines="none"></ion-item>
+
+    <ion-item class="msg-hourday" color="transparent" lines="none">
+      <ion-title>{{ messageDay }}</ion-title>
+    </ion-item>
+
+    <section *ngFor="let CATEGORY of listCategory" >
+      <ion-item color="transparent" lines="none">
+        <ion-title class="label-title" slot="start">{{ CATEGORY?.title }}</ion-title>
+      </ion-item>
+      <div>
+
+        <!--Carregamento-->
+        <app-skeleton-home *ngIf="listCategory.length <= 3" ></app-skeleton-home>
+
+        <ion-slides [options]="slidesOpts">
+          <ion-slide *ngFor="let ITEM of CATEGORY?.list">
+
+            <!--Layout de Generos-->
+            <ion-card button *ngIf="CATEGORY.type == 'gender' " (click)="onClickgenderMusic('MUSICA', ITEM)" class="card-gender" style="--background: {{ ITEM.color }}">
+              <ion-card-header>
+                <ion-card-title>{{ ITEM.title }}</ion-card-title>
+              </ion-card-header>
+              <ion-card-content>
+                <ion-icon
+                  class="icon-gender"
+                  color="light"
+                  name="musical-note"
+                ></ion-icon>
+              </ion-card-content>
+            </ion-card>
+
+            <!--Layout Artistas e Playlists-->
+            <ion-label button *ngIf="CATEGORY?.type == null " >
+              <img (click)="onClickItemList(ITEM)" [defaultImage]="'assets/images/album.jpg'" [lazyLoad]="ITEM?.photo">
+              
+              <p class="label-card">{{ ITEM.title }}</p>
+            </ion-label>
+
+          </ion-slide>
+        </ion-slides>
+      </div>
+      
+    </section>
+  </section>
+</ion-content>

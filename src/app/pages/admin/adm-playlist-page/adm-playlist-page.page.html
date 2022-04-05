@@ -1,0 +1,354 @@
+<ion-content>
+  <ion-item color="transparent" lines="none">
+    <ion-buttons slot="start">
+      <ion-chip (click)="btnBackPage()" color="light">Voltar</ion-chip>
+      <ion-title>Gestor de PlayLists</ion-title>
+    </ion-buttons>
+  </ion-item>
+  <ion-item>
+    <ion-segment value="1" [(ngModel)]="segmentRegister">
+      <ion-segment-button value="1">
+        <ion-label>Lista</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2" *ngIf="modeRegister == true">
+        <ion-label>Cadastro</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
+  <section class="background">
+    <br />
+    <!--PlayList-->
+    <section [hidden]="segmentPage != 1">
+      <section>
+        <ion-card color="primary">
+          <ion-card-header>
+            <ion-card-title>PlayLists</ion-card-title>
+            <ion-card-subtitle
+              >Gerencie e cadastre playlists.</ion-card-subtitle
+            >
+          </ion-card-header>
+        </ion-card>
+
+        <!--Sessao cadastrar nova playlist-->
+        <ion-card [hidden]="modeRegister == false || segmentRegister == 1">
+          <ion-card-header>
+            <ion-card-title>Cadastro de PlayList</ion-card-title>
+            <ion-card-subtitle
+              >Cadastre playlists na plataforma.</ion-card-subtitle
+            >
+          </ion-card-header>
+          <ion-card-content>
+            <!--Formulario-->
+            <ion-button
+              *ngIf="modeRegister == true"
+              (click)="resetForms()"
+              shape="round"
+              size="small"
+              >Novo cadastro</ion-button
+            >
+            <form [formGroup]="formPlayList">
+              <ion-label>Prévia da capa</ion-label>
+              <ion-item>
+                <ion-thumbnail>
+                  <img #imgPreview [src]="urlPhotoInput" />
+                </ion-thumbnail>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Capa da playlist</ion-label>
+                <ion-input
+                  formControlName="photo"
+                  (change)="getFile()"
+                  placeHolder="Url da capa da playlist"
+                  minLength="8"
+                  maxLength="1000"
+                  type="text"
+                  required
+                  clearInput="true"
+                >
+                </ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Titulo</ion-label>
+                <ion-input
+                  formControlName="title"
+                  placeHolder="Titulo da da playlist"
+                  minLength="8"
+                  maxLength="45"
+                  type="text"
+                  required
+                  clearInput="true"
+                >
+                </ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Descrição</ion-label>
+                <ion-textarea
+                  formControlName="description"
+                  placeHolder="Resumo da playlist"
+                  minLength="30"
+                  maxLength="1000"
+                  type="text"
+                  required
+                  clearInput="true"
+                ></ion-textarea>
+              </ion-item>
+              <ion-label>Gênero</ion-label>
+              <ion-item>
+                <ion-select
+                  formControlName="gender"
+                  cancelText="Cancelar"
+                  okText="Confirmar"
+                  placeholder="Selecione o gênero"
+                >
+                  <ion-select-option
+                    *ngFor="let ITEM of listGender"
+                    [value]="ITEM.title"
+                    >{{ ITEM.title }}</ion-select-option
+                  >
+                </ion-select>
+              </ion-item>
+              <ion-button
+                (click)="btnSaveData()"
+                [disabled]="!formPlayList.valid"
+                size="small"
+                shape="round"
+                >Cadastrar</ion-button
+              >
+            </form>
+          </ion-card-content>
+        </ion-card>
+
+        <!--PlayList-->
+        <ion-card [hidden]="segmentRegister == 2">
+          <ion-card-header>
+            <ion-card-title>PlayLists Cadastradas</ion-card-title>
+            <ion-card-subtitle
+              >Todas as playlists cadastradas</ion-card-subtitle
+            >
+            <br />
+            <ion-searchbar
+              (ionChange)="searchFilter($event, 'PLAYLIST')"
+              placeholder="Buscar por nome"
+            ></ion-searchbar>
+            <ion-label>Filtrar por Gênero</ion-label>
+            <ion-item>
+              <ion-select
+                (ionChange)="filterGender($event)"
+                cancelText="Cancelar"
+                okText="Confirmar"
+                placeholder="Selecione o gênero"
+              >
+                <ion-select-option
+                  *ngFor="let ITEM of listGender"
+                  [value]="ITEM.title"
+                  >{{ ITEM.title }}</ion-select-option
+                >
+              </ion-select>
+            </ion-item>
+          </ion-card-header>
+          <ion-list>
+            <ion-list-header>
+              <ion-title>PlayLists</ion-title>
+              <ion-title>Um total de {{ listPlayListFilter.length }}</ion-title>
+            </ion-list-header>
+            <app-skeleton-playlist
+              *ngIf="listPlayList.length < 1"
+            ></app-skeleton-playlist>
+            <ion-card *ngFor="let ITEM of listPlayListFilter">
+              <ion-item lines="none">
+                <ion-chip
+                  *ngIf="ITEM?.best == null && modeRegister == true"
+                  (click)="showAlertAddBest(ITEM)"
+                  >Destacar</ion-chip
+                >
+                <ion-label *ngIf="ITEM?.best == true">Em destaque</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-avatar>
+                  <ion-img
+                    [src]="ITEM?.photo ? ITEM?.photo : 'assets/images/img_default.jpg' "
+                  ></ion-img>
+                </ion-avatar>
+                <ion-label class="label">{{ ITEM?.title}}</ion-label>
+              </ion-item>
+              <ion-item [hidden]="modeRegister == false">
+                <ion-button
+                  (click)="showAlertRemove( ITEM, 'PLAYLIST' )"
+                  color="danger"
+                  shape="round"
+                  size="small"
+                  >Remover</ion-button
+                >
+                <ion-button
+                  (click)="btnEditItemCard( ITEM )"
+                  color="success"
+                  shape="round"
+                  size="small"
+                  >Editar</ion-button
+                >
+                <ion-button
+                  (click)="btnViewMusics( ITEM )"
+                  color="primary"
+                  shape="round"
+                  size="small"
+                  >Músicas</ion-button
+                >
+              </ion-item>
+            </ion-card>
+          </ion-list>
+        </ion-card>
+      </section>
+    </section>
+
+    <!--Musicas da PlayList-->
+    <section [hidden]="segmentPage != 2">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Músicas da PlayList</ion-card-title>
+          <ion-item>
+            <ion-avatar>
+              <ion-img [src]="dataPlayListView?.photo"></ion-img>
+            </ion-avatar>
+            <ion-label>{{ dataPlayListView?.title }}</ion-label>
+          </ion-item>
+          <ion-card-subtitle></ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-segment
+            (ionChange)="getSegmentPage($event, 'MUSIC_PLAYLIST')"
+            [(ngModel)]="segmentMusicPlayList"
+          >
+            <ion-segment-button value="1">
+              <ion-label>Cadastradas</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="2">
+              <ion-label>Todas as Músicas</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-card-content>
+        <section>
+          <ion-list [hidden]="segmentMusicPlayList != 1">
+            <ion-list-header>
+              <ion-label>Músicas</ion-label>
+            </ion-list-header>
+            <app-skeleton-playlist
+              *ngIf="listMusicsPlayList.length < 1"
+            ></app-skeleton-playlist>
+            <ion-item *ngFor="let ITEM of listMusicsPlayList">
+              <ion-label>{{ ITEM.title }}</ion-label>
+              <ion-button
+                (click)="showAlertRemove(ITEM, 'MUSIC')"
+                slot="end"
+                size="small"
+                shape="round"
+                color="danger"
+                >Remover</ion-button
+              >
+            </ion-item>
+          </ion-list>
+
+          <ion-list [hidden]="segmentMusicPlayList != 2">
+            <ion-searchbar
+              (ionChange)="searchFilter($event, 'MUSIC')"
+              placeholder="Burcar por nome"
+            ></ion-searchbar>
+            <ion-item>
+              <ion-select
+                (ionChange)="filterGender($event)"
+                cancelText="Cancelar"
+                okText="Confirmar"
+                placeholder="Selecione o gênero"
+              >
+                <ion-select-option
+                  *ngFor="let ITEM of listGender"
+                  [value]="ITEM.title"
+                  >{{ ITEM.title }}</ion-select-option
+                >
+              </ion-select>
+            </ion-item>
+            <ion-list-header>
+              <ion-label>Adicione novas músicas</ion-label>
+            </ion-list-header>
+            <app-skeleton-playlist
+              *ngIf="listMusicsFilter.length < 1"
+            ></app-skeleton-playlist>
+            <ion-item *ngFor="let ITEM of listMusicsFilter">
+              <ion-label>{{ ITEM.title }}</ion-label>
+              <ion-button
+                (click)="addMusicPlayList(ITEM)"
+                slot="end"
+                size="small"
+                shape="round"
+                color="success"
+                >Adicionar</ion-button
+              >
+            </ion-item>
+          </ion-list>
+        </section>
+      </ion-card>
+    </section>
+
+    <!--Destaques-->
+    <section [hidden]="segmentPage != 3">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>PlayLists em Destaque</ion-card-title>
+          <ion-card-subtitle
+            >Veja todas os playlists em destaque.</ion-card-subtitle
+          >
+        </ion-card-header>
+        <ion-list>
+          <ion-list-header>
+            <ion-title>PlayLists</ion-title>
+          </ion-list-header>
+          <app-skeleton-playlist
+            *ngIf="listPlayListBest.length < 1"
+          ></app-skeleton-playlist>
+          <ion-card *ngFor="let ITEM of listPlayListBest">
+            <ion-card-header>
+              <ion-card-title>{{ ITEM.title }}</ion-card-title>
+              <ion-card-subtitle>{{ ITEM.gender }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-button
+                (click)="showAlertAddBest(ITEM)"
+                color="danger"
+                size="small"
+                shape="round"
+                >Remover dos destaques</ion-button
+              >
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-card>
+    </section>
+  </section>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment
+      (ionChange)="getSegmentPage($event, 'PAGE_MENU')"
+      [(ngModel)]="segmentPage"
+    >
+      <ion-segment-button value="1">
+        <ion-label>PlayLists</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2" *ngIf="segmentPage == 2">
+        <ion-label>Músicas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="3">
+        <ion-label>Em destaque</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+    <ion-item>
+      <ion-button
+        (click)="showAlertConfirmPassword()"
+        shape="round"
+        size="small"
+        >Modo Cadastro</ion-button
+      >
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

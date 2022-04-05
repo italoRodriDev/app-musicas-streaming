@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button text="" color="light"></ion-back-button>
+      <ion-title>Músicas</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card color="primary">
+    <ion-card-header>
+      <ion-card-title>Todas as Músicas</ion-card-title>
+      <ion-card-subtitle>{{ gender }}</ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+  <ion-searchbar
+    (ionChange)="filterSearchbar($event)"
+    placeholder="Buscar por nome"
+  ></ion-searchbar>
+  <ion-item color="transparent" lines="none">
+    <ion-label position="stacked">Escolha seu gênero favorito</ion-label>
+    <ion-select
+      (ionChange)="getGenderSelect($event)"
+      placeholder="Selecione o Gênero"
+      [(ngModel)]="gender"
+      cancelText="Cancelar"
+      okText="Buscar"
+    >
+      <ion-select-option *ngFor="let ITEM of listGender"
+        >{{ ITEM.title }}</ion-select-option
+      >
+    </ion-select>
+  </ion-item>
+  <br />
+  <section class="background">
+    <app-skeleton-all-artist-musics
+      *ngIf="listAllMusicFilter.length < 1"
+    ></app-skeleton-all-artist-musics>
+
+    <section *ngIf="listAllMusicFilter.length">
+      <ion-segment mode="md" value="1" [(ngModel)]="segmentViewList">
+        <ion-segment-button value="1">
+          <ion-icon name="grid-outline" color="light"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="2">
+          <ion-icon name="list-outline" color="light"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>     
+    </section>
+   
+    <section [hidden]="segmentViewList != 1">
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let ITEM of listAllMusicFilter" size="4">
+            <ion-label (click)="onClickplay(ITEM)" button>
+              <img
+              [defaultImage]="'assets/images/album.jpg'"
+              [lazyLoad]="ITEM.photo"
+            />
+              <ion-item class="item-label" color="transparent" lines="none">
+                <ion-label class="label">{{ ITEM?.title }}</ion-label>
+              </ion-item>
+            </ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-grid>  
+    </section>
+    
+    <section [hidden]="segmentViewList != 2">
+      <app-card-item-music
+      *ngFor="let ITEM of listAllMusicFilter"
+      (click)="onClickplay(ITEM)"
+      [dataMusic]="ITEM"
+    ></app-card-item-music>
+    </section>
+    
+  </section>
+</ion-content>
+
+<ion-footer>
+  <app-player-preview></app-player-preview>
+</ion-footer>

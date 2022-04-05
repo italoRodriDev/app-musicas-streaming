@@ -1,0 +1,83 @@
+<ion-header mode="md" [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons>
+      <ion-button (click)="onDismiss()" shape="round">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content mode="md" scrollEvents="true">
+  <!---->
+  <section>
+    <!---->
+    <section class="container">
+      <ion-list>
+        <div
+          [class]=" chat.type == 'BOT' ? 'ballon-msg-bot' : 'ballon-msg-user'"
+          *ngFor="let chat of listChat"
+        >
+          <ion-label>{{ chat.msg }}</ion-label>
+        </div>
+      </ion-list>
+    </section>
+    <!---->
+  </section>
+  <!---->
+</ion-content>
+<ion-footer>
+  <div class="container-footer">
+    <div [hidden]="!disabledSend">
+      <ion-spinner class="spinner" name="dots" color="light"></ion-spinner>
+    </div>
+    <ion-toolbar class="toolbar-bottom">
+      <!---->
+      <ion-button
+        (click)="onClickContinue()"
+        [hidden]="!isLogged"
+        class="btn-continue"
+        shape="round"
+        expand="full"
+        color="secondary"
+        >Continuar</ion-button
+      >
+      <!---->
+      <form [hidden]="isLogged" [formGroup]="formAuth">
+        <ion-row class="row-input">
+          <!---->
+          <ion-col size="9">
+            <!---->
+            <ion-item [hidden]="typeForm != 'EMAIL' " color="light" lines="none">
+              <ion-input
+                #email
+                formControlName="email"
+                placeholder="Digite aqui seu e-mail..."
+                type="email"
+                minlength="8"
+                maxlength="100"
+                required
+              ></ion-input>
+            </ion-item>
+            <!---->
+          </ion-col>
+          <!---->
+          <ion-col size="3">
+            <ion-button
+              class="btn-send"
+              [disabled]="disabledSend"
+              (click)="onClickSendMsg()"
+              shape="round"
+              color="dark"
+              fill="clear"
+            >
+              <ion-icon name="send"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <!---->
+        </ion-row>
+        <!---->
+      </form>
+    </ion-toolbar>
+  </div>
+</ion-footer>

@@ -1,0 +1,63 @@
+<ion-content mode="md" fullscreen="true">
+  <section class="img-background wrapper-background">
+    <div class="box-animation">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <section class="container">
+      <div class="container-form">
+        <h3 class="title-intro"><h6 class="color-text">Olá, Tudo Bem?</h6></h3>
+        <p class="text-intro">
+          {{ message }}
+        </p>
+          <div class="container-btn">
+            <!---->
+            <br />
+            <ion-button
+              (click)="onClickRegister()"
+              expand="full"
+              shape="round"
+              size="full"
+              color="primary"
+            >
+            <ion-label>Abrir Uma Conta</ion-label>
+            </ion-button>
+            <!---->
+            <br />
+            <ion-button
+              (click)="onCliqueLogin()"
+              expand="full"
+              shape="round"
+              size="full"
+              color="secondary"
+            >
+              Já Tenho Uma Conta
+            </ion-button>
+            <!---->
+            <br />
+            <ion-button
+              (click)="onClickRecoverAccount()"
+              id="rec-account"
+              expand="full"
+              fill="clear"
+              size="full"
+              shape="round"
+              color="light"
+              >Esqueci Minha Senha
+            </ion-button>
+          </div>
+      
+      </div>
+      <!---->
+    </section>
+    <p class="text-copy">App by italo rodri.</p>
+  </section>
+</ion-content>

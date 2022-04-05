@@ -1,0 +1,53 @@
+<ion-content>
+  <section class="background">
+    <ion-item lines="none" color="transparent">
+      <ion-title>Perfil</ion-title>
+    </ion-item>
+    <br />
+    <!--Info do usuario-->
+    <ion-card color="transparent">
+      <ion-card-header>
+        <ion-item color="transparent" lines="none">
+          <ion-avatar>
+            <ion-img
+              [src]="dataUser?.photo ? dataUser?.photo : 'assets/images/avatar.jpg' "
+            ></ion-img>
+          </ion-avatar>
+          <ion-label class="label-title">{{ dataUser?.email }}</ion-label>
+          <ion-button fill="clear" shape="round">
+            <ion-icon
+              slot="end"
+              name="settings-outline"
+              color="light"
+            ></ion-icon>
+          </ion-button>
+        </ion-item>
+        <ion-card-title>Assinante Premium</ion-card-title>
+        <ion-card-subtitle>Desconto 15,00 R$ na sua folha de pagamento</ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    <br />
+
+    <ion-list>
+      <ion-list-header>
+        <ion-title>Suas Playlists</ion-title>
+      </ion-list-header>
+      <app-skeleton-playlist
+        *ngIf="listPlaylist.length < 1"
+      ></app-skeleton-playlist>
+      <ion-item
+        *ngFor="let ITEM of listPlaylistFilter; let INDEX = index"
+        color="transparent"
+        button
+      >
+        <ion-thumbnail>
+          <img [defaultImage]="'assets/images/album.jpg'" [lazyLoad]="ITEM?.photo">
+        </ion-thumbnail>
+        <ion-label (click)="onClickView(ITEM)" class="label-title">{{ ITEM?.title }}</ion-label>
+        <ion-chip (click)="removePlatlist(ITEM)">
+          <ion-icon name="remove-circle-outline" color="light"></ion-icon>
+        </ion-chip>
+      </ion-item>
+    </ion-list>
+  </section>
+</ion-content>

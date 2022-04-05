@@ -1,0 +1,71 @@
+<ion-content>
+  <section class="background">
+    <ion-item color="transparent" lines="none">
+      <ion-chip slot="start" (click)="navigateBackPage()">Voltar</ion-chip>
+      <ion-title>Adicione a sua lista</ion-title>
+    </ion-item>
+    <br />
+    <ion-card color="primary">
+      <ion-card-header>
+        <ion-card-title>{{ track?.title }}</ion-card-title>
+        <ion-card-subtitle
+          >{{ track?.titleArtist }} - {{ track?.titleAlbum }}</ion-card-subtitle
+        >
+      </ion-card-header>
+      <ion-card-content>
+        <ion-radio-group (ionChange)="getOptionRadio($event)" value="CRIAR">
+          <ion-item color="transparent">
+            <ion-label>Criar nova playlist</ion-label>
+            <ion-radio value="CRIAR" color="light"></ion-radio>
+          </ion-item>
+          <ion-item color="transparent">
+            <ion-label>Selecionar existente</ion-label>
+            <ion-radio value="EXISTENTE" color="light"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-card-content>
+    </ion-card>
+
+    <section *ngIf="toggleOptions == true">
+      <ion-card>
+        <ion-card-content>
+          <form>
+            <ion-item>
+              <ion-label position="floating">Digite o nome!</ion-label>
+              <ion-input
+                #inputText
+                type="text"
+                minlength="8"
+                maxlength="30"
+              ></ion-input>
+            </ion-item>
+            <br />
+            <ion-button
+              (click)="savePlaylist()"
+              [disabled]="inputText.value < 8"
+              size="small"
+              shape="round"
+              >Criar e salvar</ion-button
+            >
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </section>
+
+    <section *ngIf="toggleOptions == false">
+      <ion-item-divider></ion-item-divider>
+      <ion-list>
+        <ion-list-header>
+          <ion-title>Suas Playlists</ion-title>
+        </ion-list-header>
+        <app-skeleton-playlist
+          *ngIf="listPlaylist.length < 1"
+        ></app-skeleton-playlist>
+        <ion-item *ngFor="let ITEM of listPlaylist">
+          <ion-label>{{ ITEM.title }}</ion-label>
+          <ion-chip (click)="saveMusic(ITEM)">Salvar</ion-chip>
+        </ion-item>
+      </ion-list>
+    </section>
+  </section>
+</ion-content>

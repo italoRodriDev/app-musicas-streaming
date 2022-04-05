@@ -1,0 +1,65 @@
+ion-content {
+
+  ion-card{
+    border-radius: 20px;
+  }
+
+  ion-list{
+    overflow-y: scroll;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+
+  .background {
+    width: 100%;
+    height: 100%;
+    background: var(--ion-background-color);
+    background: linear-gradient(
+      0deg,
+      var(--ion-background-color) 60%,
+      var(--ion-color-primary) 95%
+    );
+  }
+
+  img {
+    border-radius: 10px;
+  }
+
+  img.ng-lazyloaded{
+    animation: fadein 2.8s;
+  }
+  @keyframes fadein {
+    from{
+      opacity: 0;
+    }
+    to{
+      opacity: 1;
+    }
+  }
+
+  .icon-player {
+    width: 200px;
+    height: 200px;
+  }
+
+  .gradient-bottom {
+    background-image: url("/assets/images/");
+  }
+
+  .label-title {
+    padding: 18px 2px;
+    font-size: 17px;
+    left: 0;
+    font-weight: 500;
+    letter-spacing: 0.0125em;
+  }
+
+
+  .label {
+    padding: 0px 2px;
+    font-size: 12px;
+    right: 0;
+    font-weight: 500;
+    letter-spacing: 0.0125em;
+  }
+}

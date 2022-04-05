@@ -1,0 +1,561 @@
+<ion-content>
+  <ion-item color="transparent" lines="none">
+    <ion-buttons slot="start">
+      <ion-chip (click)="btnBackPage()" color="light">Voltar</ion-chip>
+      <ion-title>Gestor de Artistas</ion-title>
+    </ion-buttons>
+  </ion-item>
+  <ion-item>
+    <ion-segment (ionChange)="getSegmentRegister($event)" value="1" [(ngModel)]="segmentRegister">
+      <ion-segment-button value="1">
+        <ion-label>Lista</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2" *ngIf="modeRegister == true">
+        <ion-label>Cadastro</ion-label>
+      </ion-segment-button>
+    </ion-segment>  
+  </ion-item>
+  <section class="background">
+    
+    <br />
+    <!--Artistas-->
+    <section [hidden]="segmentPage != 1">
+      <ion-card class="card" color="primary">
+        <ion-card-header>
+          <ion-card-title>Artistas</ion-card-title>
+          <ion-card-subtitle>Gerencie e cadastre artistas.</ion-card-subtitle>
+        </ion-card-header>
+      </ion-card>
+      
+      <!--Sessao cadastrar novo artista-->
+      <ion-card [hidden]="modeRegister == false || segmentRegister == 1">
+        <ion-card-header>
+          <ion-card-title>Cadastro de artistas</ion-card-title>
+          <ion-card-subtitle
+            >Cadastre artistas na plataforma.</ion-card-subtitle
+          >
+        </ion-card-header>
+        <ion-card-content>
+          <ion-button (click)="resetForms()" shape="round" size="small"
+            >Novo Cadastro</ion-button
+          >
+          <!--Formulario-->
+          <form [formGroup]="formArtist">
+            <ion-label>Prévia da capa</ion-label>
+            <ion-item>
+              <ion-thumbnail>
+                <img #imgArtistPreview [src]="urlPhotoInput" />
+              </ion-thumbnail>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Capa do Artista</ion-label>
+              <ion-input
+                formControlName="photo"
+                (change)="getFile('IMG_ARTIST')"
+                placeHolder="Url da capa do artista"
+                minLength="8"
+                maxLength="1000"
+                type="text"
+                required
+                clearInput="true"
+              >
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Nome do Artista</ion-label>
+              <ion-input
+                formControlName="title"
+                placeHolder="Nome do artista"
+                minLength="8"
+                maxLength="45"
+                type="text"
+                required
+                clearInput="true"
+              >
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Descrição</ion-label>
+              <ion-textarea
+                formControlName="description"
+                placeHolder="Descrição do artista"
+                minLength="30"
+                maxLength="1000"
+                type="text"
+                required
+                clearInput="true"
+              ></ion-textarea>
+            </ion-item>
+            <ion-label>Início da Carreira</ion-label>
+            <ion-item>
+              <ion-datetime
+                formControlName="year"
+                placeholder="Selecione o início da carreira"
+                displayFormat="DD/MM/YYYY"
+                cancelText="Cancelar"
+                doneText="Confirmar"
+              ></ion-datetime>
+            </ion-item>
+            <ion-label>Classificação Indicativa</ion-label>
+            <ion-item>
+              <ion-select
+                formControlName="classification"
+                placeholder="Selecione a classificação"
+                cancelText="Cancelar"
+                okText="Confirmar"
+              >
+                <ion-select-option>Livre</ion-select-option>
+                <ion-select-option>Maiores de 10 anos</ion-select-option>
+                <ion-select-option>Maiores de 12 anos</ion-select-option>
+                <ion-select-option>Maiores de 14 anos</ion-select-option>
+                <ion-select-option>Maiores de 16 anos</ion-select-option>
+                <ion-select-option>Maiores de 18 anos</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-label>Gênero</ion-label>
+            <ion-item>
+              <ion-select
+                formControlName="gender"
+                cancelText="Cancelar"
+                okText="Confirmar"
+                placeholder="Selecione o gênero"
+              >
+              <ion-select-option *ngFor="let ITEM of listGender" [value]="ITEM.title">{{ ITEM.title }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-button
+              (click)="btnSaveData( 'ARTIST' )"
+              [disabled]="!formArtist.valid"
+              size="small"
+              shape="round"
+              >Cadastrar</ion-button
+            >
+          </form>
+        </ion-card-content>
+      </ion-card>
+
+      <!--Artistas-->
+      <ion-card [hidden]="segmentRegister == 2">
+        <ion-card-header>
+          <ion-card-title>Artistas Cadastrados</ion-card-title>
+          <ion-card-subtitle>Todos os artistas cadastrados</ion-card-subtitle>
+          <br />
+          <ion-searchbar
+            (ionChange)="searchFilter($event)"
+            placeholder="Buscar por nome"
+          ></ion-searchbar>
+          <ion-label>Filtrar por Gênero</ion-label>
+          <ion-item>
+            <ion-select
+              (ionChange)="filterGender($event)"
+              cancelText="Cancelar"
+              okText="Confirmar"
+              placeholder="Selecione o gênero"
+            >
+            <ion-select-option *ngFor="let ITEM of listGender" [value]="ITEM.title">{{ ITEM.title }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-card-header>
+        <ion-list>
+          <ion-list-header>
+            <ion-title>Artistas</ion-title>
+            <ion-title>Um total de {{ listArtist.length }}</ion-title>
+          </ion-list-header>
+          <ion-card *ngFor="let ITEM of listArtistFilter">
+            <ion-item lines="none">
+              <ion-chip
+                *ngIf="ITEM?.best == null"
+                (click)="showAlertAddBest(ITEM)"
+                >Destacar</ion-chip
+              >
+              <ion-label *ngIf="ITEM?.best == true">Em destaque</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-avatar>
+                <ion-img
+                  [src]="ITEM?.photo ? ITEM?.photo : 'assets/images/img_default.jpg' "
+                ></ion-img>
+              </ion-avatar>
+              <ion-label class="label">{{ ITEM?.title}}</ion-label>
+            </ion-item>
+
+            <ion-item>
+              <ion-button
+                (click)="showAlertRemove( 'ARTIST', ITEM )"
+                [hidden]="modeRegister == false"
+                color="danger"
+                shape="round"
+                size="small"
+                >Remover</ion-button
+              >
+              <ion-button
+                (click)="btnEditItemCard( 'ARTIST', ITEM )"
+                [hidden]="modeRegister == false"
+                color="success"
+                shape="round"
+                size="small"
+                >Editar</ion-button
+              >
+              <ion-button
+                (click)="btnViewSection( 'VER_ALBUM', ITEM )"
+                color="secondary"
+                shape="round"
+                size="small"
+                >Ver Albúms</ion-button
+              >
+            </ion-item>
+          </ion-card>
+        </ion-list>
+      </ion-card>
+
+      <!--Artistas em destaque-->
+      <ion-card *ngIf="modeRegister == true">
+        <ion-card-header>
+          <ion-card-title>Artistas em Destaque</ion-card-title>
+          <ion-card-subtitle
+            >Veja todos os artistas em destaque.</ion-card-subtitle
+          >
+        </ion-card-header>
+        <ion-list>
+          <ion-list-header>
+            <ion-title>Artistas</ion-title>
+          </ion-list-header>
+          <app-skeleton-playlist *ngIf="listArtistBest.length < 1"></app-skeleton-playlist>
+          <ion-card *ngFor="let ITEM of listArtistBest">
+            <ion-card-header>
+              <ion-card-title>{{ ITEM.title }}</ion-card-title>
+              <ion-card-subtitle>{{ ITEM.gender }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-chip (click)="showAlertAddBest(ITEM)" color="danger"
+                >Remover dos destaques</ion-chip
+              >
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+      </ion-card>
+    </section>
+
+    <!--Albums-->
+    <section [hidden]="segmentPage != 2">
+      <ion-card color="primary">
+        <ion-card-header>
+          <ion-card-title>Albúms</ion-card-title>
+          <ion-card-subtitle>Gerencie e cadastre albúms.</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <!--Detalhes do album editado-->
+          <ion-item color="transparent">
+            <ion-avatar>
+              <img [src]="detailArtistEdition?.photo" />
+            </ion-avatar>
+            <ion-label class="label"
+              >{{ detailArtistEdition?.title }}</ion-label
+            >
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <!--Sessao cadastro albums-->
+      <ion-card [hidden]="modeRegister == false || segmentRegister == 1">
+        <ion-card-header>
+          <ion-card-title>Cadatro de Albúms</ion-card-title>
+          <ion-card-subtitle>Cadastre albúms para o artista.</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-button (click)="resetForms()" shape="round" size="small"
+            >Novo Cadastro</ion-button
+          >
+          <!--Formulario-->
+          <form [formGroup]="formAlbum">
+            <ion-label>Prévia da capa</ion-label>
+            <ion-item>
+              <ion-thumbnail>
+                <img #imgAlbumPreview [src]="urlPhotoInput" />
+              </ion-thumbnail>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Capa do Albúm</ion-label>
+              <ion-input
+                formControlName="photo"
+                (change)="getFile('IMG_ALBUM')"
+                placeHolder="Url da capa do albúm"
+                minLength="8"
+                maxLength="1000"
+                type="text"
+                required
+                clearInput="true"
+              >
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Titulo</ion-label>
+              <ion-input
+                formControlName="title"
+                placeHolder="Titulo do albúm"
+                minLength="8"
+                maxLength="45"
+                type="text"
+                required
+                clearInput="true"
+              >
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Descrição</ion-label>
+              <ion-textarea
+                formControlName="description"
+                placeHolder="Descrição do albúm"
+                minLength="30"
+                maxLength="1000"
+                type="text"
+                required
+                clearInput="true"
+              ></ion-textarea>
+            </ion-item>
+            <ion-button
+              (click)="btnSaveData( 'ALBUM' )"
+              [disabled]="!formAlbum.valid"
+              size="small"
+              shape="round"
+              >Cadastrar</ion-button
+            >
+          </form>
+        </ion-card-content>
+      </ion-card>
+
+      <!--Albums-->
+      <ion-card [hidden]="segmentRegister == 2">
+        <ion-card-header>
+          <ion-card-title>Albúms do Artista</ion-card-title>
+          <ion-card-subtitle
+            >Todos os albúms do artista cadastrados.</ion-card-subtitle
+          >
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-list-header>
+              <ion-title>Albúms</ion-title>
+              <ion-title>Um total de {{ listAlbum.length }}</ion-title>
+            </ion-list-header>
+            <ion-card *ngFor="let ITEM of listAlbum">
+              <ion-card-header>
+                <ion-item color="transparent">
+                  <ion-avatar>
+                    <ion-img
+                      [src]="ITEM?.photo ? ITEM?.photo : 'assets/images/img_default.jpg' "
+                    ></ion-img>
+                  </ion-avatar>
+                  <ion-label class="label">{{ ITEM?.title }}</ion-label>
+                </ion-item>
+              </ion-card-header>
+              <ion-item>
+                <ion-button
+                  (click)="showAlertRemove( 'ALBUM', ITEM )"
+                  [hidden]="modeRegister == false"
+                  color="danger"
+                  size="small"
+                  shape="round"
+                  >Remover</ion-button
+                >
+                <ion-button
+                  (click)="btnEditItemCard( 'ALBUM', ITEM )"
+                  [hidden]="modeRegister == false"
+                  color="success"
+                  size="small"
+                  shape="round"
+                  >Editar</ion-button
+                >
+                <ion-button
+                  (click)="btnViewSection( 'VER_MUSICAS', ITEM )"
+                  color="secondary"
+                  size="small"
+                  shape="round"
+                  >Músicas
+                </ion-button>
+              </ion-item>
+            </ion-card>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </section>
+
+    <!--Musicas-->
+    <section [hidden]="segmentPage != 3">
+      <ion-card color="primary">
+        <ion-card-header>
+          <ion-card-title>Músicas</ion-card-title>
+          <ion-card-subtitle>Gerencie e cadastre músicas.</ion-card-subtitle>
+          <!--Detalhes da musica editada-->
+          <ion-item color="transparent">
+            <ion-avatar>
+              <img [src]="detailArtistEdition?.photo" />
+            </ion-avatar>
+            <ion-label>
+              <ion-label class="label"
+                >{{ detailArtistEdition?.title }}</ion-label
+              >
+              <ion-label class="label"
+                >{{ detailAlbumEdition?.title }}</ion-label
+              >
+            </ion-label>
+          </ion-item>
+        </ion-card-header>
+      </ion-card>
+
+      <!--Sessao cadastro de musicas-->
+      <ion-card [hidden]="modeRegister == false || segmentRegister == 1">
+        <ion-card-header>
+          <ion-card-title>Cadastro de Músicas</ion-card-title>
+          <ion-card-subtitle>Cadastre músicas para o albúm.</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-button (click)="resetForms()" shape="round" size="small"
+            >Novo Cadastro</ion-button
+          >
+          <!--Formulario-->
+          <form [formGroup]="formMusic">
+            <ion-label>Música</ion-label>
+            <ion-chip (click)="setTypeInput()" color="success"
+              >Selecionar a música do computador</ion-chip
+            >
+            <ion-item>
+              <input
+                [hidden]="this.toggleTypeInputAudio == false"
+                #inputSelectAudio
+                (change)="getFile('AUDIO')"
+                type="file"
+              />
+              <ion-input
+                [hidden]="this.toggleTypeInputAudio == true"
+                formControlName="url"
+                placeHolder="Url da música"
+                required
+                type="url"
+                minLength="8"
+                maxLength="1000"
+                clearInput="true"
+              ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="floating">Titulo</ion-label>
+              <ion-input
+                formControlName="title"
+                placeHolder="Titulo da música"
+                required
+                type="text"
+                minLength="8"
+                maxLength="45"
+                clearInput="true"
+              >
+              </ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Letra</ion-label>
+              <ion-textarea
+                formControlName="letter"  
+                placeholder="Cole a letra da música"
+                cols="5"
+                type="text"
+                required
+                minlength="8"
+                maxlength="2000"
+              ></ion-textarea>
+            </ion-item>
+            <ion-button
+              [disabled]="!formMusic.valid"
+              (click)="btnSaveData( 'MUSIC' )"
+              size="small"
+              shape="round"
+              >Cadastrar</ion-button
+            >
+          </form>
+        </ion-card-content>
+      </ion-card>
+
+      <!--Musicas-->
+      <ion-card [hidden]="segmentRegister == 2">
+        <ion-card-header>
+          <ion-card-title>Músicas Cadastradas</ion-card-title>
+          <ion-card-subtitle
+            >Todos as músicas cadastradas no albúm.</ion-card-subtitle
+          >
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <ion-list-header>
+              <ion-title>Músicas</ion-title>
+              <ion-title>Um total de {{ listMusic.length }}</ion-title>
+            </ion-list-header>
+            <ion-card *ngFor="let ITEM of listMusic">
+              <ion-item>
+                <ion-label>{{ ITEM?.title }}</ion-label>
+              </ion-item>
+              <ion-item [hidden]="modeRegister == false">
+                <ion-button
+                  (click)="showAlertRemove( 'MUSIC', ITEM )"
+                  color="danger"
+                  size="small"
+                  shape="round"
+                  >Remover</ion-button
+                >
+                <ion-button
+                  (click)="btnEditItemCard( 'MUSIC', ITEM )"
+                  color="success"
+                  size="small"
+                  shape="round"
+                  >Editar</ion-button
+                >
+                <ion-button
+                  (click)="playPreview('PLAY', ITEM)"
+                  *ngIf="playerPreview == false"
+                  fill="clear"
+                  size="small"
+                >
+                  <ion-icon color="light" name="play"></ion-icon>
+                </ion-button>
+                <ion-button
+                  (click)="playPreview('PAUSE', ITEM)"
+                  *ngIf="playerPreview == true"
+                  fill="clear"
+                  size="small"
+                >
+                  <ion-icon color="light" name="pause"></ion-icon>
+                </ion-button>
+              </ion-item>
+            </ion-card>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </section>
+  </section>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-segment (ionChange)="getSegment($event)" [(ngModel)]="segmentPage">
+      <ion-segment-button value="1">
+        <ion-label>Artistas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="2" [hidden]="segmentPage == 1">
+        <ion-label>Albúms</ion-label>
+      </ion-segment-button>
+      <ion-segment-button
+        value="3"
+        [hidden]="segmentPage == 1 || segmentPage != 3"
+      >
+        <ion-label>Músicas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-item>
+      <ion-button
+        (click)="showAlertConfirmPassword()"
+        shape="round"
+        size="small"
+        >Modo Cadastro</ion-button
+      >
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,114 @@
+<ion-header #header mode="md">
+  <ion-toolbar #toolbar>
+    <ion-buttons>
+      <ion-button class="back-btn" (click)="onDismiss(false)">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title>Contrato</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container-text">
+    <h2>Política Privacidade e Uso</h2>
+    <p>A sua privacidade é importante para nós. É política do {{ dataStore?.name }} respeitar a sua privacidade em relação a
+      qualquer informação sua que possamos coletar no aplicativo <a href="https://itdelivery.web.app">{{ dataStore?.name }}</a>, e
+      outros aplicativos que possuímos e operamos.</p>
+    <p>Solicitamos informações pessoais apenas quando realmente precisamos delas para lhe fornecer um serviço. Fazemo-lo
+      por meios justos e legais, com o seu conhecimento e consentimento. Também informamos por que estamos coletando e
+      como será usado. </p>
+    <p>Apenas retemos as informações coletadas pelo tempo necessário para fornecer o serviço solicitado. Quando
+      armazenamos dados, protegemos dentro de meios comercialmente aceitáveis para evitar perdas e roubos, bem como
+      acesso, divulgação, cópia, uso ou modificação não autorizados.</p>
+    <p>Não compartilhamos informações de identificação pessoal publicamente ou com terceiros, exceto quando exigido por
+      lei.</p>
+    <p>O nosso aplicativo pode ter links para sites externos que não são operados por nós. Esteja ciente de que não
+      temos
+      controle sobre o conteúdo e práticas desses sites e não podemos aceitar responsabilidade por suas respectivas
+      políticas de privacidade. </p>
+    <p>Você é livre para recusar a nossa solicitação de informações pessoais, entendendo que talvez não possamos
+      fornecer alguns dos serviços desejados.</p>
+    <p>O uso continuado de nosso aplicativo será considerado como aceitação de nossas práticas em torno de privacidade e
+      informações pessoais. Se você tiver alguma dúvida sobre como lidamos com dados do usuário e informações pessoais,
+      entre em contacto connosco.
+    </p>
+    <p>
+      Todos os dados coletados são armazenados de forma segura em um ambiente computacional de nuvem, seguindo as
+      recomendações
+      da Google para realizar testes e armazenamente de dados com as devidas regras de segurança.
+    </p>
+    <h3>Quais os dados estão sendo armazenados?</h3>
+    <p>
+      Apenas o usuário tem acesso ao seu e-mail e senha, pois não armazenamos essas informações no nosso banco de dados
+      e sim em um provedor de autenticação operado pela Google. Armazenamos o Nome, Telefone, Endereço e Geolocalização
+      do usuário para podermos oferecer recursos importantes da aplicação, pois sem esses dados não seria possível
+      oferecer um serviço de qualidade, damos a liberdade ao usuário para deletar e editar os endereços, além de alterar
+      o seu Nome e Telefone a qualquer momento de forma imediata. Esses dados são armazenados de forma individual e
+      apenas o usuário logado tem acesso aos seus dados, outros usuários não podem acessar dados de outros clientes da
+      loja exceto a loja que recebeu o pedido do cliente em específico.
+    </p>
+    <h3>Compromisso do Usuário</h3>
+    <p>O usuário se compromete a fazer uso adequado dos conteúdos e da informação que o {{ dataStore?.name }} oferece no site e
+      com caráter enunciativo, mas não limitativo:</p>
+    <ul>
+      <li>A) Não se envolver em atividades que sejam ilegais ou contrárias à boa fé a à ordem pública;</li>
+      <li>B) Não difundir propaganda ou conteúdo de natureza racista, xenofóbica, ou azar, qualquer tipo de pornografia
+        ilegal,
+        de apologia ao terrorismo ou contra os direitos humanos;</li>
+      <li>C) Não causar danos aos sistemas físicos (hardwares) e lógicos (softwares) do {{ dataStore?.name }}, de seus
+        fornecedores ou terceiros, para introduzir ou disseminar vírus informáticos ou quaisquer outros sistemas de
+        hardware ou software que sejam capazes de causar danos anteriormente mencionados.</li>
+    </ul>
+    <h3>Termos de responsabilidade</h3>
+    <p>Todos os produtos vendidos na plataforma são de responsabilidade do proprietário da loja.</p>
+    <p>Todo produto danificado ou vencido é de responsabilidade do proprietário da loja.</p>
+    <p>Entregas e devoluções são de total responsabilidade do proprietário da loja.</p>
+    <p>Erros cometidos no processamento de pedidos é de inteira responsabilidade do proprietário da loja.</p>
+    <p>A it delivery não faz estornos de pagamentos online, fica sob critério e responsabilidade do proprietário da loja
+      realizar a devolução do pagamento online em casos de erro no processamento do pagamento do pedido.</p>
+    <p>A it delivery não se responsabiliza por erros em pagamentos processados pela PicPay,
+      o proprietário da loja deve entrar em contato diretamente com o suporte da empresa PicPay em seu aplicativo.
+    </p>
+    <p>
+      A it delivery não se responsabiliza por acidentes com entregadores, pois não são nossos parceiros,
+      todos os entregadores são contratados pelos proprietários das lojas e os entregadores devem reportar
+      irregularidades, acidentes ou quaisquer outros problemas diretamente ao proprietário da loja.
+    </p>
+    <p>A it delivery não salva dados de cartões de clientes, todos os dados de cartões e chaves de Pix são
+      armazenados
+      no próprio aplicativo da PicPay, assim é de inteira responsabilidade da empresa PicPay que fornece a API
+      publica para pagamentos online realizar a manutenção e promover um armazenamento seguro dos dados.
+    </p>
+    <p>Pagamentos atrasados podem resultar na exclusão da loja com aviso prévio.</p>
+    <h3>Mais informações</h3>
+    <p>A it delivery nomeia Italo Rodrigues dos Santos como responsável pela segurança e tratamento de dados deste site.</p>
+    <p>Esperemos que esteja esclarecido e, como mencionado anteriormente, se houver algo que você não tem certeza se
+      precisa ou não, geralmente é mais seguro deixar os cookies ativados, caso interaja com um dos recursos que você
+      usa em nosso site.
+    </p>
+    <p>Esta política é efetiva a partir de <strong>Fevereiro</strong>/<strong>2022</strong>.</p>
+  </div>
+</ion-content>
+<ion-footer [hidden]="disabledButton === true">
+  <ion-toolbar>
+    <div class="container-button">
+      <ion-button 
+        (click)="onDismiss(false)" 
+        expand="full" 
+        shape="round" 
+        color="danger">
+        Não concordo
+      </ion-button>
+      <br />
+      <ion-button 
+        (click)="onDismiss(true)" 
+        expand="full" 
+        shape="round" 
+        color="tertiary">
+        <ion-label>Concordo</ion-label>
+      </ion-button>
+      <br />
+    </div>
+  </ion-toolbar>
+</ion-footer>
